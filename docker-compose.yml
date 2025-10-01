@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb_server
+    ports:
+      - "8000:8000"   # Chroma REST API
+    volumes:
+      - chroma_data:/chroma/.chromadb   # Persist data
+    environment:
+      - IS_PERSISTENT=TRUE
+      - CHROMA_DB_IMPL=duckdb+parquet   # Default backend
+      - ANONYMIZED_TELEMETRY=FALSE      # Disable telemetry (optional)
+
+volumes:
+  chroma_data:

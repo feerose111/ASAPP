@@ -5,13 +5,13 @@ from fastapi import FastAPI
 from ASAPP.backend.utils.schema import Project
 from ASAPP.backend.agent.model import Planner
 from contextlib import asynccontextmanager
-
+from ASAPP.backend.utils.config_loader import PLAN_MODEL
 load_dotenv()
-model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model_id = PLAN_MODEL
 hf_token = os.getenv("HF_TOKEN")
 
 llm = HuggingFaceEndpoint(
-    repo_id="meta-llama/Meta-Llama-3-8B-Instruct",
+    repo_id= PLAN_MODEL,
     task="conversational",
     huggingfacehub_api_token=hf_token,
     temperature= 0.7,

@@ -24,5 +24,6 @@ def generate_prompt(inputs):
         project_type=inputs.get("project_type", "General"),
         duration=inputs.get("duration", "1"),
         tech_stack=inputs.get("tech_stack", "none"),
-        goals=inputs.get("goals", "Build a simple working prototype.")
+        goals=inputs.get("goals", "Build a simple working prototype."),
+        description=inputs.get("description", "None")
     )
