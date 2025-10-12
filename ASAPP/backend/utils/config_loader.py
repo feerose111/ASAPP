@@ -10,4 +10,5 @@ config = load_config()
 
 PLAN_MODEL = config["model"]["planner"]
 
-CREATE_PROJECT_API = config["api"]["create_project"]
+CREATE_PROJECT_URL= config["api"]["create_project"]
+CHAT_URL = config["api"]["chat"]

@@ -8,3 +8,9 @@ class Project(BaseModel):
     tech_stack: str
     goals: str
     description: Optional[str] = None
+
+class Query(BaseModel):
+    message: str
+
+class ProjectPlan(BaseModel):
+    project_plan: str
