@@ -19,13 +19,6 @@ def show():
             st.session_state.page = "menu"
             st.rerun()
 
-    if st.button("Create Another Project"):
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.session_state.page = "menu"
-        st.rerun()
-
-
     col1, col2 = st.columns(2)
 
     with col1:

@@ -1,10 +1,27 @@
 import yaml
 import os
+from ASAPP.backend.utils.logger import LoggerManager
+
+logger = LoggerManager(use_console=True)
 
 def load_config(path="../../config.yml"):
-    absolute_path = os.path.abspath(os.path.join(os.path.dirname(__file__), path))
-    with open(absolute_path, "r") as file:
-        return yaml.safe_load(file)
+    try:
+        absolute_path = os.path.abspath(os.path.join(os.path.dirname(__file__), path))
+        with open(absolute_path, "r") as file:
+
+            logger.log("INFO", "Loading Config", {"message": "Config loaded Successfully."})
+            return yaml.safe_load(file)
+
+    except FileNotFoundError:
+        logger.log("INFO", "Config not found.", {"message": "Config file not found."})
+
+    except yaml.YAMLError as e:
+        logger.log("ERROR", "Config Parse Error", {"error": str(e)})
+        return None
+
+    except Exception as e:
+        logger.log("ERROR", "Config Load Failed", {"error": str(e)})
+        return None
 
 config = load_config()
 

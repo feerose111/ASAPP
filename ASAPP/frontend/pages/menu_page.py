@@ -33,7 +33,7 @@ def show():
     chosen_defaults = st.multiselect("Choose from the predefined options",
                                     default_tech_options,
                                     key="chosen_defaults")
-    custom_stack = st.text_input("Enter custom technology", key="custom_input")
+    st.text_input("Enter custom technology", key="custom_input")
 
     def add_custom_tech():
         if st.session_state.custom_input and st.session_state.custom_input not in st.session_state.selected_stack:
