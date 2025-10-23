@@ -14,27 +14,27 @@ services:
       - ANONYMIZED_TELEMETRY=FALSE
 
   backend:
-    build: ./backend
+    build: ASAPP/backend
     container_name: asapp_backend
     ports:
       - "8088:8088"
     depends_on:
       - chromadb
     env_file:
-      - ../.env
+      - .env
     environment:
       - CHROMA_URL=http://chromadb:8000
     restart: always
 
   frontend:
-    build: ./frontend
+    build: ASAPP/frontend
     container_name: asapp_frontend
     ports:
       - "8501:8501"
     depends_on:
       - backend
     env_file:
-      - ../.env
+      - .env
     restart: always
 
 volumes:
