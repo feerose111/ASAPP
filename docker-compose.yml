@@ -7,11 +7,35 @@ services:
     ports:
       - "8000:8000"   # Chroma REST API
     volumes:
-      - chroma_data:/chroma/.chromadb   # Persist data
+      - ./chroma_data:/chroma/.chromadb   # Persist data
     environment:
       - IS_PERSISTENT=TRUE
-      - CHROMA_DB_IMPL=duckdb+parquet   # Default backend
-      - ANONYMIZED_TELEMETRY=FALSE      # Disable telemetry (optional)
+      - CHROMA_DB_IMPL=duckdb+parquet
+      - ANONYMIZED_TELEMETRY=FALSE
+
+  backend:
+    build: ./backend
+    container_name: asapp_backend
+    ports:
+      - "8088:8088"
+    depends_on:
+      - chromadb
+    env_file:
+      - ../.env
+    environment:
+      - CHROMA_URL=http://chromadb:8000
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: asapp_frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    env_file:
+      - ../.env
+    restart: always
 
 volumes:
   chroma_data:
