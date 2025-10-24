@@ -2,6 +2,6 @@ model:
   planner: "meta-llama/Meta-Llama-3-8B-Instruct"
 
 api:
-  create_project: "http://127.0.0.1:8088/create_project"
-  chat: "http://127.0.0.1:8088/chat"
+  create_project: "https://asapp-backend-4fcd.onrender.com/create_project"
+  chat: "https://asapp-backend-4fcd.onrender.com/chat"
 
