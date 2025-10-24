@@ -89,6 +89,7 @@ pip install -r requirements.txt
 Create a .env file in the project root and add:
 
 HF_TOKEN=your_huggingface_token
+BACKEND_URL=your_backend_url
 ```
 
 ### 5️⃣ Run Backend
