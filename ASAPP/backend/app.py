@@ -1,20 +1,14 @@
-import os
-from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEndpoint
 from fastapi import FastAPI
 from ASAPP.backend.db.schema import Project, Query
 from ASAPP.backend.agent.model import Planner
 from ASAPP.backend.agent.chat_bot import ContextChatbot
 from contextlib import asynccontextmanager
-from ASAPP.backend.utils.config_loader import PLAN_MODEL
+from ASAPP.backend.utils.config import settings
 from ASAPP.backend.db.chroma_db_connect import DbConnector
 from typing import Optional
 from fastapi import HTTPException
 from ASAPP.backend.utils.logger import LoggerManager, ConsoleLogger, JSONFileLogger
-
-load_dotenv()
-model_id = PLAN_MODEL
-hf_token = os.getenv("HF_TOKEN")
 
 logger = LoggerManager(use_console=True)
 logger.attach(ConsoleLogger())
@@ -22,9 +16,9 @@ logger.attach(JSONFileLogger())
 
 
 llm = HuggingFaceEndpoint(
-    repo_id= PLAN_MODEL,
+    repo_id= settings.PLAN_MODEL,
     task="conversational",
-    huggingfacehub_api_token=hf_token,
+    huggingfacehub_api_token=settings.HF_TOKEN,
     temperature= 0.7,
     max_new_tokens= 512
 )

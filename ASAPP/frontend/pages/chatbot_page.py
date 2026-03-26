@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from ASAPP.backend.utils.config_loader import CHAT_URL
+from ASAPP.backend.utils.config import settings
 
 def show_chat():
     st.title("Project Plan Chatbot")
@@ -34,7 +34,7 @@ def show_chat():
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 try:
-                    response = requests.post(CHAT_URL, json={"message": user_input})
+                    response = requests.post(settings.CHAT_URL, json={"message": user_input})
                     if response.status_code == 200:
                         reply = response.json()["reply"]
                         st.session_state.chat_history.append({"role": "assistant", "content": reply})

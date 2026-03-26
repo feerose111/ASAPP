@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import os ,sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from ASAPP.backend.utils.config_loader import CREATE_PROJECT_URL
+from ASAPP.backend.utils.config import settings
 
 default_tech_options = [
     "Python", "Django", "FastAPI", "Flask",
@@ -95,7 +95,7 @@ def show():
             }
 
             try:
-                response = requests.post(CREATE_PROJECT_URL, json=project_data)
+                response = requests.post(settings.CREATE_PROJECT_URL, json=project_data)
                 if response.status_code == 200:
                     st.session_state.api_result = response.json()
                 else:

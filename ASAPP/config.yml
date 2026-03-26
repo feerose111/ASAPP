@@ -1,7 +1,0 @@
-model:
-  planner: "meta-llama/Meta-Llama-3-8B-Instruct"
-
-api:
-  create_project: "${BACKEND_URL}/create_project"
-  chat: "${BACKEND_URL}/chat"
-
