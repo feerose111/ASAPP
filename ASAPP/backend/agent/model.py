@@ -1,7 +1,7 @@
 from langchain_huggingface import ChatHuggingFace
 from langchain.prompts import ChatPromptTemplate
-from ASAPP.backend.utils.prompt_generator import generate_prompt
-from ASAPP.backend.utils.logger import LoggerManager
+from utils.prompt_generator import generate_prompt
+from utils.logger import LoggerManager
 
 class Planner:
     def __init__(self, llm):

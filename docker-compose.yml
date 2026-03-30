@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   chromadb:
     image: chromadb/chroma:latest
@@ -10,12 +8,12 @@ services:
       - ./chroma_data:/chroma/.chromadb   # Persist data
     environment:
       - IS_PERSISTENT=TRUE
-      - CHROMA_DB_IMPL=duckdb+parquet
       - ANONYMIZED_TELEMETRY=FALSE
 
   app_backend:
+    image: asapp-backend
     build:
-      context: ASAPP/backend
+      context: ./ASAPP/backend
       dockerfile: Dockerfile
     container_name: asapp_backend
     ports:
@@ -30,11 +28,9 @@ services:
     volumes:                  #for development
       - ./ASAPP/backend:/app  #hot reload
     restart: unless-stopped
-    command: >
-      sh -c "pip install -r requirements.txt &&
-             python -m uvicorn main:app --host 0.0.0.0 --port 8088 --reload"
 
   app_frontend:
+    image: asapp-frontend
     build:
       context: ASAPP/frontend
       dockerfile: Dockerfile
@@ -43,7 +39,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - backend
+      - app_backend
     environment:
       - REACT_APP_API_URL=http://localhost:8088
       - WATCHPACK_POLLING=true

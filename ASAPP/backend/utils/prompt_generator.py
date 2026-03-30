@@ -1,6 +1,5 @@
 from langchain.prompts import PromptTemplate
-from ASAPP.backend.utils.logger import LoggerManager
-
+from utils.logger import LoggerManager
 logger = LoggerManager(use_console=True)
 
 prompt_template = PromptTemplate(

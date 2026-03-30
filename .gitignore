@@ -11,3 +11,6 @@ __pycache__/
 **/.idea/
 
 logs/
+chroma_data
+.dockerignore
+.idea

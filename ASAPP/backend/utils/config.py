@@ -4,6 +4,8 @@ from typing import Optional
 class Settings(BaseSettings):
     HF_TOKEN: str
     BACKEND_URL: Optional[str] = None
+    CHROMA_URL: str = "http://localhost:8000"
+
 
     PLAN_MODEL: str = ""
     CREATE_PROJECT_URL: str = ""

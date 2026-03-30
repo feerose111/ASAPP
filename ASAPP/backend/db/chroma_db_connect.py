@@ -1,15 +1,20 @@
 import chromadb
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from ASAPP.backend.utils.logger import LoggerManager
+from utils.config import settings
+from utils.logger import LoggerManager
 import uuid
 from datetime import datetime, timezone
+
 
 class DbConnector:
     def __init__(self):
         self.logger = LoggerManager(use_console=True)
         self.logger.log("INFO", "DbConnector", {"message": "DbConnector initialized."})
 
-        self.chroma_client = chromadb.Client()
+        chroma_url = settings.CHROMA_URL
+        host = chroma_url.replace("http://", "").split(":")[0]
+        port = int(chroma_url.split(":")[-1])
+        self.chroma_client = chromadb.HttpClient(host=host, port=port)
         self.chat_collection = self.chroma_client.get_or_create_collection(name="chat_messages")
         self.context_collection = self.chroma_client.get_or_create_collection(name="chat_context")
         self.text_splitter = RecursiveCharacterTextSplitter(
