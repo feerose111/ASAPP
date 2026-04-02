@@ -9,6 +9,55 @@ services:
     environment:
       - IS_PERSISTENT=TRUE
       - ANONYMIZED_TELEMETRY=FALSE
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - asapp-network
+
+  postgres:
+    image: postgres:16-alpine  # Lighter image
+    container_name: postgres_db_server
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-asapp_db}
+      POSTGRES_INITDB_ARGS: "-c encoding=UTF8 --locale=C.UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isReady -U ${DB_USER:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - asapp-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_server
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'False'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - asapp-network
+
 
   app_backend:
     image: asapp-backend
@@ -19,15 +68,21 @@ services:
     ports:
       - "8088:8088"
     depends_on:
-      - chromadb
+      postgres:
+        condition: service_healthy
+      chromadb:
+        condition: service_healthy
     env_file:
       - .env
     environment:
       - CHROMA_URL=http://chromadb:8000
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
     #restart: always  #for production
     volumes:                  #for development
       - ./ASAPP/backend:/app  #hot reload
     restart: unless-stopped
+    networks:
+      - asapp-network
 
   app_frontend:
     image: asapp-frontend
@@ -46,5 +101,14 @@ services:
     volumes:
       - ./ASAPP/frontend/src:/app/src
       - /app/node_modules
+    networks:
+      - asapp-network
+
 volumes:
   chroma_data:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  asapp-network:
+    driver: bridge

@@ -12,3 +12,7 @@ langchain-text-splitters==0.3.9
 chromadb==1.1.0
 streamlit==1.50.0
 pydantic-settings
+sqlalchemy
+asyncpg
+passlib
+python-jose[cryptography]

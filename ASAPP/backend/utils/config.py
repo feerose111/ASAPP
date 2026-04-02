@@ -11,6 +11,13 @@ class Settings(BaseSettings):
     CREATE_PROJECT_URL: str = ""
     CHAT_URL: str = ""
 
+    DB_USER:str
+    DB_PASSWORD :str
+    DB_NAME : str
+    DATABASE_URL: str
+    PGADMIN_EMAIL : str
+    PGADMIN_PASSWORD : str
+
 
     model_config = SettingsConfigDict(
         env_file=".env",
